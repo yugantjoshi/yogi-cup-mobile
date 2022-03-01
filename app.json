@@ -2,31 +2,31 @@
   "expo": {
     "name": "yogi-cup-mobile",
     "slug": "yogi-cup-mobile",
-    "version": "1.0.0",
+    "version": "1.1.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "privacy": "unlisted",
+    "icon": "./assets/yogi-cup-logo.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/yogi-cup-splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.yugantjoshi.yogicupmobile"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/yogi-cup-logo.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/assets/yogi-cup-logo.png"
     }
   }
 }
