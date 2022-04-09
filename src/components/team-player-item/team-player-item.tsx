@@ -11,22 +11,21 @@ import * as React from 'react'
 import { YogiCupService } from '../../services/yogi-cup-service'
 import {
   IPlayerResponse,
-  ITeamResponse,
   ITeamViewPlayerResponse,
   ITeamViewResponse,
 } from '../../utils/result-types/result-types'
 import { PlayerItem } from '../player-item/player-item'
 
 export const TeamPlayerItem = ({ route }: any) => {
-  const { awayTeamId } = route.params
+  const { teamId } = route.params
   const [teamView, setTeamView] = React.useState<ITeamViewResponse>(
     {} as ITeamViewResponse,
   )
 
   const getTeamViewInfo = async () => {
-    console.log(awayTeamId)
+    console.log(teamId)
     const team = await YogiCupService.getTeamById({
-      teamId: awayTeamId,
+      teamId: teamId,
     })
     const captainId = team.captainId
     const playerInfo = team.players.map(async (player) => {
@@ -51,6 +50,7 @@ export const TeamPlayerItem = ({ route }: any) => {
     setTeamView({
       teamId: team.id,
       teamName: team.name,
+      teamNickname: team.teamNickname,
       teamWins: team.gamesWon,
       teamLosses: team.gamesLost,
       teamTies: team.gamesTied,
@@ -82,7 +82,13 @@ export const TeamPlayerItem = ({ route }: any) => {
             <Heading fontWeight="medium" size="sm">
               {teamView.teamId}
             </Heading>
-            <Heading my={1} size="lg">
+            {teamView.teamNickname?.length > 0 && (
+              <Heading fontWeight="bold" size="lg">
+                {teamView.teamNickname}
+              </Heading>
+            )}
+
+            <Heading fontWeight={'light'} my={1} size="lg">
               {teamView.teamName}
             </Heading>
             <Heading fontWeight="medium" size="xs">

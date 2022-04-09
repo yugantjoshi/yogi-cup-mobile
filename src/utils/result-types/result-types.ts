@@ -3,12 +3,14 @@ export interface IGameResponse {
   courtName: string
   homeTeamId: number
   homeTeamName: string
+  homeTeamNickname: string
   homeTeamScore: number
-  homeTeamWins?: number
+  homeTeamWins: number
   homeTeamLosses: number
   homeTeamTies: number
   awayTeamId: number
   awayTeamName: string
+  awayTeamNickname: string
   awayTeamScore: number
   awayTeamWins: number
   awayTeamLosses: number
@@ -52,6 +54,7 @@ export interface ITeamScheduleResponse {
 export interface ITeamResponse {
   id: number
   name: string
+  teamNickname: string
   leagueId: number
   leagueName: string
   eventId: number
@@ -100,6 +103,7 @@ export interface IPlayerResponse {
 export interface ITeamViewResponse {
   teamId: number
   teamName: string
+  teamNickname: string
   teamWins: number
   teamLosses: number
   teamTies: number
@@ -121,6 +125,7 @@ export interface IGame {
   id: number
   courtId: number
   leagueId: number
+  awayTeaNickname: string
   awayTeamName: string
   awayTeamId: number
   startTime: Date

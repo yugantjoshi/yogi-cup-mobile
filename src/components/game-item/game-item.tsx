@@ -1,9 +1,11 @@
 import { MaterialIcons } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 import {
   Center,
   Circle,
   Divider,
   HStack,
+  Pressable,
   Spacer,
   Text,
   VStack,
@@ -12,10 +14,14 @@ import * as React from 'react'
 import { useEffect } from 'react'
 
 export interface IGameItemProps {
+  team1Id: number
   teamName1: string
+  team1Nickname: string
   team1Score: number
   team1WinsTiesLoss: string
+  team2Id: number
   teamName2: string
+  team2Nickname: string
   team2Score: number
   team2WinsTiesLoss: string
   time: Date
@@ -23,15 +29,21 @@ export interface IGameItemProps {
 }
 
 export const GameItem = ({
+  team1Id,
   teamName1,
+  team1Nickname,
   team1Score,
   team1WinsTiesLoss,
+  team2Id,
   teamName2,
+  team2Nickname,
   team2Score,
   team2WinsTiesLoss,
   time,
   court,
 }: IGameItemProps) => {
+  const navigation = useNavigation()
+
   const [isLive, setIsLive] = React.useState(false)
 
   // Convert ISO 8601 string to Date object
@@ -68,6 +80,13 @@ export const GameItem = ({
     .map((word) => word[0])
     .join('')
 
+  const handleTeamPress = (teamId: number) => {
+    console.log(`Team ${teamId} pressed`)
+    navigation.navigate('Team', {
+      teamId,
+    })
+  }
+
   return (
     <>
       <HStack space={5} p={3}>
@@ -85,32 +104,58 @@ export const GameItem = ({
         </VStack>
         {/* Team Info */}
         <VStack alignContent="flex-start" justifyContent="center">
-          <HStack>
-            <Circle mr={2} size="40px" bg="yogiCup.navy">
-              {team1Initials}
-            </Circle>
-            <Center>
-              <VStack>
-                <Text bold color="coolGray.800">
-                  {teamName1}
-                </Text>
-                <Text color="coolGray.800">{team1WinsTiesLoss}</Text>
-              </VStack>
-            </Center>
-          </HStack>
-          <HStack py={4}>
-            <Circle mr={2} size="40px" bg="yogiCup.orange">
-              <Text color="yogiCup.white">{team2Initials}</Text>
-            </Circle>
-            <Center>
-              <VStack>
-                <Text bold color="coolGray.800">
-                  {teamName2}
-                </Text>
-                <Text color="coolGray.800">{team2WinsTiesLoss}</Text>
-              </VStack>
-            </Center>
-          </HStack>
+          <Pressable
+            onPress={() => {
+              handleTeamPress(team1Id)
+            }}
+          >
+            <HStack>
+              <Center>
+                <Circle mr={2} size="40px" bg="yogiCup.navy">
+                  {team1Initials}
+                </Circle>
+              </Center>
+              <Center>
+                <VStack>
+                  {team1Nickname?.length > 0 && (
+                    <Text fontWeight="bold" color="coolGray.800">
+                      {'team1Nickname'}
+                    </Text>
+                  )}
+                  <Text fontWeight="light" color="coolGray.800">
+                    {teamName1}
+                  </Text>
+                  <Text color="coolGray.800">{team1WinsTiesLoss}</Text>
+                </VStack>
+              </Center>
+            </HStack>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              handleTeamPress(team2Id)
+            }}
+          >
+            <HStack py={4}>
+              <Center>
+                <Circle mr={2} size="40px" bg="yogiCup.orange">
+                  <Text color="yogiCup.white">{team2Initials}</Text>
+                </Circle>
+              </Center>
+              <Center>
+                <VStack>
+                  {team2Nickname?.length > 0 && (
+                    <Text fontWeight="bold" color="coolGray.800">
+                      {'team2Nickname'}
+                    </Text>
+                  )}
+                  <Text fontWeight="light" color="coolGray.800">
+                    {teamName2}
+                  </Text>
+                  <Text color="coolGray.800">{team2WinsTiesLoss}</Text>
+                </VStack>
+              </Center>
+            </HStack>
+          </Pressable>
         </VStack>
         {/* Scoreboard */}
         <Spacer />

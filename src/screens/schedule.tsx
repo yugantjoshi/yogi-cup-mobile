@@ -104,8 +104,11 @@ export const Schedule = () => {
 
       {isTeamScheduleSelected ? (
         <>
-          <Heading fontSize="xl" p={4}>
+          <Heading fontSize="xl" p={1}>
             Team Schedule
+          </Heading>
+          <Heading fontWeight="light" fontSize="sm" p={1} mt={-1}>
+            *Times are subject to change
           </Heading>
           <FlatList
             refreshControl={
@@ -114,6 +117,7 @@ export const Schedule = () => {
             data={games}
             renderItem={({ item }) => (
               <TeamScheduleItem
+                awayTeamNickname={item.awayTeaNickname}
                 awayTeamId={item.awayTeamId}
                 awayTeamName={item.awayTeamName}
                 time={item.startTime}

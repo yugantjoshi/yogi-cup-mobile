@@ -36,6 +36,15 @@ function ScheduleStackScreen() {
   )
 }
 
+function GameStackScreen() {
+  return (
+    <TeamScheduleStack.Navigator>
+      <TeamScheduleStack.Screen name="All Games" component={Games} />
+      <TeamScheduleStack.Screen name="Team" component={TeamPlayerItem} />
+    </TeamScheduleStack.Navigator>
+  )
+}
+
 const AuthContext = React.createContext<AuthContextData>({} as AuthContextData)
 
 const App = () => {
@@ -142,7 +151,7 @@ const App = () => {
           <>
             <Tab.Screen name="Home" component={Home} />
             <Tab.Screen name="Schedule" component={ScheduleStackScreen} />
-            <Tab.Screen name="Games" component={Games} />
+            <Tab.Screen name="Games" component={GameStackScreen} />
             <Tab.Screen name="Profile" component={Profile} />
           </>
         ) : (

@@ -21,7 +21,7 @@ export const Games = () => {
 
   const getGamesInfo = async () => {
     await YogiCupService.getGames().then(async (games) => {
-      const modGames = games.map(async (game) => {
+      const modGames = await games.map(async (game) => {
         const awayTeamId = game.awayTeamId
         const homeTeamId = game.homeTeamId
         // Get the team by id
@@ -41,7 +41,7 @@ export const Games = () => {
 
         return game
       })
-      setGames(await Promise.all(modGames))
+      setGames(await Promise.all(await modGames))
     })
   }
 
@@ -67,10 +67,14 @@ export const Games = () => {
         initialScrollIndex={currentIndex}
         renderItem={({ item }) => (
           <GameItem
+            team1Id={item.homeTeamId}
             teamName1={item.homeTeamName}
+            team1Nickname={item.homeTeamNickname}
             team1Score={item.homeTeamScore}
             team1WinsTiesLoss={`${item.homeTeamWins} - ${item.homeTeamLosses} - ${item.homeTeamTies}`}
+            team2Id={item.awayTeamId}
             teamName2={item.awayTeamName}
+            team2Nickname={item.awayTeamNickname}
             team2Score={item.awayTeamScore}
             team2WinsTiesLoss={`${item.awayTeamWins} - ${item.awayTeamLosses} - ${item.awayTeamTies}`}
             time={item.startTime}

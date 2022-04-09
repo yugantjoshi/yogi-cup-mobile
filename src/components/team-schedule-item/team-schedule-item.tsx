@@ -12,6 +12,7 @@ import {
 import * as React from 'react'
 
 export interface ITeamScheduleItemProps {
+  awayTeamNickname: string
   awayTeamId: number
   awayTeamName: string
   time: Date
@@ -20,6 +21,7 @@ export interface ITeamScheduleItemProps {
 }
 
 export const TeamScheduleItem = ({
+  awayTeamNickname,
   awayTeamId,
   awayTeamName,
   time,
@@ -47,15 +49,15 @@ export const TeamScheduleItem = ({
     .map((word) => word[0])
     .join('')
 
-  const handleTeamPress = () => {
-    console.log('Team pressed')
+  const handleTeamPress = (teamId: number) => {
+    console.log(`Team ${teamId} pressed`)
     navigation.navigate('Team', {
-      awayTeamId,
+      teamId,
     })
   }
 
   return (
-    <Pressable onPress={handleTeamPress}>
+    <Pressable onPress={() => handleTeamPress(awayTeamId)}>
       <Box
         _dark={{
           borderColor: 'gray.600',
@@ -78,19 +80,26 @@ export const TeamScheduleItem = ({
             </Center>
           </VStack>
           <VStack alignContent="center" justifyContent="center" space={0.1}>
-            <HStack>
-              <Circle mr={2} size="40px" bg="yogiCup.navy">
-                {awayTeamInitials}
-              </Circle>
-              <Center>
-                <VStack>
-                  <Text bold color="coolGray.800">
-                    {awayTeamName}
-                  </Text>
-                  <Text color="coolGray.800">{winLoss}</Text>
-                </VStack>
-              </Center>
-            </HStack>
+            <Center>
+              <HStack>
+                <Circle mr={2} size="40px" bg="yogiCup.navy">
+                  {awayTeamInitials}
+                </Circle>
+                <Center>
+                  <VStack>
+                    {awayTeamNickname?.length > 0 && (
+                      <Text fontWeight="bold" color="coolGray.800">
+                        {awayTeamNickname}
+                      </Text>
+                    )}
+                    <Text fontWeight="light" color="coolGray.800">
+                      {awayTeamName}
+                    </Text>
+                    <Text color="coolGray.800">{winLoss}</Text>
+                  </VStack>
+                </Center>
+              </HStack>
+            </Center>
           </VStack>
         </HStack>
         <Divider />
