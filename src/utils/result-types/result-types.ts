@@ -134,3 +134,18 @@ export interface IGame {
   awayTeamLosses: number
   awayTeamTies: number
 }
+
+export interface IEventResponse {
+    id: number
+    name: string
+    description: string
+    startDate: Date
+    endDate: Date
+    metrics: [
+      {
+        title: string
+        count: number
+        description: string
+      }
+    ]
+}

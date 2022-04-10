@@ -1,56 +1,65 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Box, Button, Center, Circle, Heading, HStack, Text } from 'native-base'
-import * as React from 'react'
-import { useEffect } from 'react'
-import { RefreshControl, ScrollView } from 'react-native'
-import { useAuth } from '..'
-import { HomeMetriCardItem } from '../components/home-metric-card-item/home-metric-card-item'
-import { YogiCupService } from '../services/yogi-cup-service'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  Box,
+  Button,
+  Center,
+  Circle,
+  Heading,
+  HStack,
+  Text,
+} from "native-base";
+import * as React from "react";
+import { useEffect } from "react";
+import { RefreshControl, ScrollView } from "react-native";
+import { useAuth } from "..";
+import { HomeMetriCardItem } from "../components/home-metric-card-item/home-metric-card-item";
+import { YogiCupService } from "../services/yogi-cup-service";
 import {
   IPlayerResponse,
   ITeamPlayerResponse,
   ITeamResponse,
-} from '../utils/result-types/result-types'
+} from "../utils/result-types/result-types";
 
 export const Profile = () => {
-  const auth = useAuth()
+  const auth = useAuth();
 
-  const [refreshing, setRefreshing] = React.useState(false)
+  const [refreshing, setRefreshing] = React.useState(false);
   const [profile, setProfile] = React.useState<IPlayerResponse>(
-    {} as IPlayerResponse,
-  )
-  const [teamName, setTeamName] = React.useState<string>('')
+    {} as IPlayerResponse
+  );
+  const [teamName, setTeamName] = React.useState<string>("");
 
   const onRefresh = React.useCallback(async () => {
-    setRefreshing(true)
+    setRefreshing(true);
     await getProfileInfo()
       .then((res) => {
-        setRefreshing(false)
+        setRefreshing(false);
       })
       .catch((err) => {
-        setRefreshing(false)
-      })
-  }, [])
+        setRefreshing(false);
+      });
+  }, []);
 
   useEffect(() => {
-    onRefresh()
-  }, [])
+    onRefresh();
+  }, []);
 
   const getProfileInfo = async () => {
-    const profileInfo: IPlayerResponse = await YogiCupService.getPlayerByUserId()
+    const profileInfo: IPlayerResponse =
+      await YogiCupService.getPlayerByUserId();
     const teamInfo: ITeamResponse = await YogiCupService.getTeamById({
       teamId: profileInfo.teamId,
-    })
-    setTeamName(teamInfo.name)
-    setProfile(profileInfo)
-  }
+    });
+    setTeamName(teamInfo.name);
+    setProfile(profileInfo);
+  };
 
-  const splitName = (name: string = '') => {
+  const splitName = (name: string = "") => {
     return name
-      .split(' ')
+      .split(" ")
       .map((word) => word[0])
-      .join('')
-  }
+      .join("");
+  };
 
   return (
     <Box h="100%">
@@ -78,29 +87,29 @@ export const Profile = () => {
             <HomeMetriCardItem
               width="80%"
               metric={profile.totalPoints}
-              description="points"
+              title={"Points"}
             />
           </Center>
           <Center>
             <HomeMetriCardItem
               width="80%"
               metric={profile.totalAssists}
-              description="assists"
+              title="Assists"
             />
             <HomeMetriCardItem
               width="80%"
               metric={profile.totalRebounds}
-              description="rebounds"
+              title={"Rebounds"}
             />
             <HomeMetriCardItem
               width="80%"
               metric={profile.totalSteals}
-              description="steals"
+              title={"Steals"}
             />
             <HomeMetriCardItem
               width="80%"
               metric={profile.totalBlocks}
-              description="blocks"
+              title={"Blocks"}
             />
           </Center>
         </Box>
@@ -117,5 +126,5 @@ export const Profile = () => {
         </Center>
       </ScrollView>
     </Box>
-  )
-}
+  );
+};

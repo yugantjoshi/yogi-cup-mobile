@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
+  IEventResponse,
   IGameResponse,
   ILoginResponse,
   IPlayerResponse,
@@ -35,6 +36,27 @@ export const YogiCupService = {
       return await response.json()
     } catch (e) {
       throw new Error(`Error logging in ${e.message}`)
+    }
+  },
+
+  getEventById: async (eventId: number): Promise<IEventResponse> => {
+    try {
+      let token = await AsyncStorage.getItem('@AuthData')
+      token = JSON.parse(token ?? '')
+      console.info('Fetching games...')
+      // Hardcoded in for Yogi Cup 2022
+      const response = await fetch(`${BASE_URL}/event/${eventId}`, {
+        method: 'GET',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+      })
+      return await response.json()
+    } catch (e) {
+      throw new Error(`Error fetching Event ${e.message}`)
     }
   },
 
@@ -97,7 +119,7 @@ export const YogiCupService = {
       })
       return await response.json()
     } catch (e) {
-      throw new Error(`Error fetching games ${e.message}`)
+      throw new Error(`Error fetching all players ${e.message}`)
     }
   },
 
@@ -122,7 +144,7 @@ export const YogiCupService = {
       )
       return await response.json()
     } catch (e) {
-      throw new Error(`Error fetching games ${e.message}`)
+      throw new Error(`Error fetching player by userId ${e.message}`)
     }
   },
 

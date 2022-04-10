@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "yogi-cup-mobile",
+    "name": "Yogi Cup",
     "slug": "yogi-cup-mobile",
-    "version": "1.1.1",
+    "version": "1.1.4",
     "orientation": "portrait",
     "privacy": "unlisted",
     "icon": "./assets/yogi-cup-logo.png",
@@ -14,16 +14,21 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.yugantjoshi.yogicupmobile"
+      "bundleIdentifier": "com.yugantjoshi.yogicupmobile",
+      "buildNumber": "4"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/yogi-cup-logo.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.yugantjoshi.yogicupmobile",
+      "versionCode": 4
     },
     "web": {
       "favicon": "./src/assets/yogi-cup-logo.png"
