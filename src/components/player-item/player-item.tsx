@@ -6,16 +6,17 @@ import {
   Spacer,
   Text,
   VStack,
-} from 'native-base'
-import * as React from 'react'
+} from "native-base";
+import * as React from "react";
+import { getInitials } from "../../utils/string-format";
 
 export interface IPlayerItemProps {
-  name: string
-  isCaptain: boolean
-  points: number
-  rebounds: number
-  assists: number
-  steals: number
+  name: string;
+  isCaptain: boolean;
+  points: number;
+  rebounds: number;
+  assists: number;
+  steals: number;
 }
 
 export const PlayerItem = ({
@@ -26,24 +27,17 @@ export const PlayerItem = ({
   assists,
   steals,
 }: IPlayerItemProps) => {
-  const getPlayerInitials = (playerName: string) => {
-    return playerName
-      .split(' ')
-      .map((word) => word[0])
-      .join('')
-  }
-
   return (
     <HStack m={4}>
       <Circle mr={2} size="40px" bg="yogiCup.navy">
-        {getPlayerInitials(name)}
+        {getInitials(name)}
       </Circle>
       <Center>
         <VStack>
           <Text bold color="coolGray.800">
             {name}
           </Text>
-          {isCaptain && <Text color="coolGray.800">{'Captain'}</Text>}
+          {isCaptain && <Text color="coolGray.800">{"Captain"}</Text>}
         </VStack>
       </Center>
       <Spacer />
@@ -71,5 +65,5 @@ export const PlayerItem = ({
         </Heading>
       </Center>
     </HStack>
-  )
-}
+  );
+};

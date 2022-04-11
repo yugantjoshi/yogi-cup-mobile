@@ -12,6 +12,8 @@ import {
 } from "native-base";
 import * as React from "react";
 import { useEffect } from "react";
+import { getDayOfWeek, getTimeOfDay } from "../../utils/date-format";
+import { getInitials } from "../../utils/string-format";
 
 export interface IGameItemProps {
   team1Id: number;
@@ -42,19 +44,6 @@ export const GameItem = ({
 
   const [isLive, setIsLive] = React.useState(false);
 
-  // Convert ISO 8601 string to Date object
-  const date = new Date(time);
-
-  // Get the day of the week from the date
-  const day = date.toLocaleString("en-US", { weekday: "long" });
-
-  // Convert Date object to 12-hour time string
-  const timeString = date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true,
-  });
-
   useEffect(() => {
     const now = new Date();
     const scheduled = new Date(time);
@@ -73,13 +62,6 @@ export const GameItem = ({
     }
   }, []);
 
-  const getTeamInitials = (teamName: string = "") => {
-    return teamName
-      .split(" ")
-      .map((word) => word[0])
-      .join("");
-  };
-
   const handleTeamPress = (teamId: number) => {
     console.log(`Team ${teamId} pressed`);
     navigation.navigate("Team", {
@@ -94,10 +76,10 @@ export const GameItem = ({
         <VStack alignContent="flex-start" justifyContent="center">
           <Center>
             <Text color="coolGray.800" bold>
-              {day}
+              {getDayOfWeek(time)}
             </Text>
             <Text color="coolGray.800" bold>
-              {timeString}
+              {getTimeOfDay(time)}
             </Text>
             <Text color="coolGray.600">{court}</Text>
           </Center>
@@ -112,7 +94,7 @@ export const GameItem = ({
             <HStack>
               <Center>
                 <Circle mr={2} size="40px" bg="yogiCup.navy">
-                  {getTeamInitials(teamName1)}
+                  {getInitials(teamName1)}
                 </Circle>
               </Center>
               <Center>
@@ -137,9 +119,7 @@ export const GameItem = ({
             <HStack py={4}>
               <Center>
                 <Circle mr={2} size="40px" bg="yogiCup.orange">
-                  <Text color="yogiCup.white">
-                    {getTeamInitials(teamName2)}
-                  </Text>
+                  <Text color="yogiCup.white">{getInitials(teamName2)}</Text>
                 </Circle>
               </Center>
               <Center>

@@ -1,4 +1,5 @@
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 import {
   Box,
   Center,
@@ -8,16 +9,18 @@ import {
   Pressable,
   Text,
   VStack,
-} from 'native-base'
-import * as React from 'react'
+} from "native-base";
+import * as React from "react";
+import { getInitials } from "../../utils/string-format";
+import { getDayOfWeek, getTimeOfDay } from "../../utils/date-format";
 
 export interface ITeamScheduleItemProps {
-  awayTeamNickname: string
-  awayTeamId: number
-  awayTeamName: string
-  time: Date
-  court: string
-  winLoss: string
+  awayTeamNickname: string;
+  awayTeamId: number;
+  awayTeamName: string;
+  time: Date;
+  court: string;
+  winLoss: string;
 }
 
 export const TeamScheduleItem = ({
@@ -28,53 +31,34 @@ export const TeamScheduleItem = ({
   court,
   winLoss,
 }: ITeamScheduleItemProps) => {
-  const navigation = useNavigation()
-
-  // Convert ISO 8601 string to Date object
-  const date = new Date(time)
-
-  // Get the day of the week from the date
-  const day = date.toLocaleString('en-US', { weekday: 'long' })
-
-  // Convert Date object to 12-hour time string
-  const timeString = date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-  })
-
-  // Creates an initial from the team name
-  const awayTeamInitials = awayTeamName
-    .split(' ')
-    .map((word) => word[0])
-    .join('')
+  const navigation = useNavigation();
 
   const handleTeamPress = (teamId: number) => {
-    console.log(`Team ${teamId} pressed`)
-    navigation.navigate('Team', {
+    console.log(`Team ${teamId} pressed`);
+    navigation.navigate("Team", {
       teamId,
-    })
-  }
+    });
+  };
 
   return (
     <Pressable onPress={() => handleTeamPress(awayTeamId)}>
       <Box
         _dark={{
-          borderColor: 'gray.600',
+          borderColor: "gray.600",
         }}
         borderColor="coolGray.200"
         pl="4"
         pr="5"
-        justifyContent={'center'}
+        justifyContent={"center"}
       >
         <HStack space={2} py="5">
-          <VStack alignContent="center" justifyContent="center">
+          <VStack space={2}>
             <Center>
               <Text color="coolGray.800" bold>
-                {day}
+                {getDayOfWeek(time)}
               </Text>
               <Text color="coolGray.800" bold>
-                {timeString}
+                {getTimeOfDay(time)}
               </Text>
               <Text color="coolGray.600">{court}</Text>
             </Center>
@@ -83,7 +67,7 @@ export const TeamScheduleItem = ({
             <Center>
               <HStack>
                 <Circle mr={2} size="40px" bg="yogiCup.navy">
-                  {awayTeamInitials}
+                  {getInitials(awayTeamName)}
                 </Circle>
                 <Center>
                   <VStack>
@@ -105,5 +89,5 @@ export const TeamScheduleItem = ({
         <Divider />
       </Box>
     </Pressable>
-  )
-}
+  );
+};

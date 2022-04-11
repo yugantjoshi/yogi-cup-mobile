@@ -91,6 +91,7 @@ export const Home = () => {
       </Box>
       <FlatList
         w={"100%"}
+        h="50%"
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }

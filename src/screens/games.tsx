@@ -12,7 +12,6 @@ import {
 export const Games = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [games, setGames] = React.useState<IGameResponse[]>([]);
-  const [currentIndex, setCurrentIndex] = React.useState<number>(0);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
