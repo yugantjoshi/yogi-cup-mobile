@@ -125,14 +125,22 @@ export interface IGame {
   id: number
   courtId: number
   leagueId: number
-  awayTeaNickname: string
-  awayTeamName: string
-  awayTeamId: number
   startTime: Date
   courtName: string
+
+  awayTeamId: number
+  awayTeamNickname: string
+  awayTeamName: string
   awayTeamWins: number
   awayTeamLosses: number
   awayTeamTies: number
+
+  homeTeamId: number
+  homeTeamName: string
+  homeTeamNickname: string
+  homeTeamWins: number
+  homeTeamLosses: number
+  homeTeamTies: number
 }
 
 export interface IEventResponse {

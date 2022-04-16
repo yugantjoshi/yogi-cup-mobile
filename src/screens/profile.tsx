@@ -80,7 +80,7 @@ export const Profile = () => {
             </Heading>
             <Heading fontSize="3xl">{teamName}</Heading>
             <Heading m={4} fontSize="lg">
-              {profile.bkmsId ? { BKMSID: profile.bkmsId } : null}
+              {profile.bkmsId ? `BKMSID: ${profile.bkmsId}` : null}
             </Heading>
           </Center>
           <Center>

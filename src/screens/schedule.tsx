@@ -9,6 +9,7 @@ import {
   IGame,
   ITeamPlayerResponse,
   ITeamResponse,
+  ITeamScheduleResponse,
 } from "../utils/result-types/result-types";
 
 export const Schedule = () => {
@@ -16,6 +17,7 @@ export const Schedule = () => {
   const [games, setGames] = React.useState<IGame[]>([]);
   const [isTeamScheduleSelected, setIsTeamScheduleSelected] =
     React.useState(true);
+  const [playerTeamId, setPlayerTeamId] = React.useState(0);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -34,10 +36,12 @@ export const Schedule = () => {
     try {
       const playerInfo = await YogiCupService.getPlayerByUserId();
       const teamId = playerInfo.teamId;
+      setPlayerTeamId(teamId);
 
-      const teamSchedule = await YogiCupService.getTeamSchedule({
-        teamId: teamId,
-      });
+      const teamSchedule: ITeamScheduleResponse[] =
+        await YogiCupService.getTeamSchedule({
+          teamId: teamId,
+        });
       const gamesForEachDay = teamSchedule.map((day) => {
         return day.games.map((game) => {
           return {
@@ -48,15 +52,28 @@ export const Schedule = () => {
       const flattenedGames = gamesForEachDay.reduce((acc, curr) => {
         return acc.concat(curr);
       });
-
       const schedule = flattenedGames.map(async (scheduledGame) => {
-        const awayTeam: ITeamResponse = await YogiCupService.getTeamById({
-          teamId: scheduledGame.awayTeamId,
-        });
-        scheduledGame.awayTeamWins = awayTeam.gamesWon ?? 0;
-        scheduledGame.awayTeamLosses = awayTeam.gamesLost ?? 0;
-        scheduledGame.awayTeamTies = awayTeam.gamesTied ?? 0;
-        return scheduledGame;
+        if (scheduledGame.homeTeamId === teamId) {
+          console.log("home team");
+          const awayTeam: ITeamResponse = await YogiCupService.getTeamById({
+            teamId: scheduledGame.awayTeamId,
+          });
+          scheduledGame.awayTeamWins = awayTeam.gamesWon ?? 0;
+          scheduledGame.awayTeamLosses = awayTeam.gamesLost ?? 0;
+          scheduledGame.awayTeamTies = awayTeam.gamesTied ?? 0;
+          console.log(`Set away team ${awayTeam.name}`);
+          return scheduledGame;
+        } else {
+          console.log("away team");
+          const homeTeam: ITeamResponse = await YogiCupService.getTeamById({
+            teamId: scheduledGame.homeTeamId,
+          });
+          scheduledGame.homeTeamWins = homeTeam.gamesWon ?? 0;
+          scheduledGame.homeTeamLosses = homeTeam.gamesLost ?? 0;
+          scheduledGame.homeTeamTies = homeTeam.gamesTied ?? 0;
+          console.log(`Set home team ${homeTeam.name}`);
+          return scheduledGame;
+        }
       });
       setGames(await Promise.all(schedule));
     } catch (e) {
@@ -110,12 +127,28 @@ export const Schedule = () => {
             data={games}
             renderItem={({ item }) => (
               <TeamScheduleItem
-                awayTeamNickname={item.awayTeaNickname}
-                awayTeamId={item.awayTeamId}
-                awayTeamName={item.awayTeamName}
+                awayTeamNickname={
+                  item.awayTeamId === playerTeamId
+                    ? item.homeTeamNickname
+                    : item.awayTeamNickname
+                }
+                awayTeamId={
+                  item.awayTeamId === playerTeamId
+                    ? item.homeTeamId
+                    : item.awayTeamId
+                }
+                awayTeamName={
+                  item.awayTeamId === playerTeamId
+                    ? item.homeTeamName
+                    : item.awayTeamName
+                }
                 time={item.startTime}
                 court={item.courtName}
-                winLoss={`${item.awayTeamWins} - ${item.awayTeamLosses} - ${item.awayTeamTies}`}
+                winLoss={
+                  item.awayTeamId === playerTeamId
+                    ? `${item.homeTeamWins} - ${item.homeTeamLosses} - ${item.homeTeamTies}`
+                    : `${item.awayTeamWins} - ${item.awayTeamLosses} - ${item.awayTeamTies}`
+                }
               />
             )}
             keyExtractor={(item) => `${item.id}`}
